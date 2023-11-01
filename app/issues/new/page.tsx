@@ -10,25 +10,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/api/validationSchemas";
 import { z } from "zod"
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
-type IssueForm =  z.infer<typeof createIssueSchema>
+type IssueForm = z.infer<typeof createIssueSchema>
 
 
 const NewIssuePage = () => {
 
-  const { register, control, handleSubmit ,  formState : {errors}} = useForm<IssueForm>({
-    resolver : zodResolver(createIssueSchema)
+  const { register, control, handleSubmit, formState: { errors } } = useForm<IssueForm>({
+    resolver: zodResolver(createIssueSchema)
   });
   const router = useRouter()
   const [error, setError] = useState('')
+  const [isSubmitting , setSubmitting ] = useState(false)
 
   return (
     <div className="max-w-xl ">
       <form onSubmit={handleSubmit(async (data) => {
         try {
+          setSubmitting (true)
           await axios.post('/api/issue', data)
           router.push('/issues')
         } catch (error) {
+          setSubmitting (false)
           setError('An unexpected error occured .')
         }
       })}
@@ -37,22 +41,25 @@ const NewIssuePage = () => {
           <TextField.Input placeholder="Title" {...register('title')}>
           </TextField.Input>
         </TextField.Root>
-        { <ErrorMessage>
-             {errors.title?.message}
-            </ErrorMessage>}
+        {<ErrorMessage>
+          {errors.title?.message}
+        </ErrorMessage>}
         <Controller
           name="description"
           control={control}
           render={({ field }) => <SimpleMDE placeholder="Description"  {...field} />} />
-           { <ErrorMessage>
-             {errors.description?.message}
-            </ErrorMessage>}
+        {<ErrorMessage>
+          {errors.description?.message}
+        </ErrorMessage>}
         {error && <Callout.Root color="red" className="mt-5">
           <Callout.Text>
             {error}
           </Callout.Text>
         </Callout.Root>}
-        <Button>Submit new issue</Button>
+        <Button disabled={isSubmitting}>
+          Submit new issue
+          { isSubmitting  && <Spinner></Spinner>}
+        </Button>
       </form>
     </div>
   )
