@@ -1,5 +1,5 @@
 'use client';
-import { Button, Callout, Text, TextField } from "@radix-ui/themes"
+import { Button, Callout, Select, SelectGroup, Text, TextField } from "@radix-ui/themes"
 import SimpleMDE from "react-simplemde-editor";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
@@ -36,7 +36,7 @@ const NewIssuePage = () => {
 
   return (
     <div className="max-w-xl ">
-      <form onSubmit={ onSubmit }
+      <form onSubmit={onSubmit}
         className="space-y-3">
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register('title')}>
