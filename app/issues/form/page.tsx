@@ -32,6 +32,7 @@ const IssueForm = ({params} : Props) => {
       if(params.id) await axios.patch('/api/issues/'+ params.id , data)
       else await axios.post('/api/issue', data)
       router.push('/issues')
+      router.refresh();
     } catch (error) {
       setSubmitting(false)
       setError('An unexpected error occured .')
