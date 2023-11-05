@@ -28,7 +28,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       setSubmitting(true)
       if(issue?.id) await axios.patch('/api/issues/'+ issue.id , data)
       else await axios.post('/api/issues/issue', data)
-      router.push('/issues')
+      router.push('/issues/list')
       router.refresh();
     } catch (error) {
       console.log('err' , error)
