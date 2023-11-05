@@ -38,7 +38,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
                     <Pencil2Icon />
                     <Link href={`/issues/edit/${issue.id}`}>Edit Issue</Link>
                 </Button>
-                <DeleteIssueButton/>
+                <DeleteIssueButton issueId={issue.id}/>
                 </Flex>
             </Box>
         </Grid>
