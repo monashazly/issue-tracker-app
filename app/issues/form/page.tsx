@@ -7,17 +7,21 @@ import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/api/validationSchemas";
+import { issueSchema } from "@/app/api/validationSchemas";
 import { z } from "zod"
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 
-type IssueForm = z.infer<typeof createIssueSchema>
+type IssueForm = z.infer<typeof issueSchema>
 
-const NewIssuePage = () => {
+interface Props{
+  params : {id : string}
+}
+
+const IssueForm = ({params} : Props) => {
 
   const { register, control, handleSubmit, formState: { errors } } = useForm<IssueForm>({
-    resolver: zodResolver(createIssueSchema)
+    resolver: zodResolver(issueSchema)
   });
   const router = useRouter()
   const [error, setError] = useState('')
@@ -25,7 +29,8 @@ const NewIssuePage = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true)
-      await axios.post('/api/issue', data)
+      if(params.id) await axios.patch('/api/issues/'+ params.id , data)
+      else await axios.post('/api/issue', data)
       router.push('/issues')
     } catch (error) {
       setSubmitting(false)
@@ -57,7 +62,7 @@ const NewIssuePage = () => {
           </Callout.Text>
         </Callout.Root>}
         <Button disabled={isSubmitting}>
-          Submit new issue
+          {params.id ? 'Update Issue' : 'Submit new issue'}
           {isSubmitting && <Spinner></Spinner>}
         </Button>
       </form>
@@ -65,4 +70,4 @@ const NewIssuePage = () => {
   )
 }
 
-export default NewIssuePage
+export default IssueForm

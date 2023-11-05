@@ -8,7 +8,7 @@ interface Params{
 
 export async function PATCH(
     request: NextRequest, 
-    { params }: { params: { id: string }}) {
+    { params }: Params) {
     const body = await request.json();
     const validation = issueSchema.safeParse(body);
     if (!validation.success)
@@ -25,7 +25,6 @@ export async function PATCH(
       data: {
         title: body.title,
         description: body.description
-        // status : body.status
       }
     });
   
