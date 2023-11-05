@@ -1,5 +1,5 @@
 import prisma from "@/prisma/client"
-import { Avatar, Box, Button, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
+import {  Box, Button, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
 import { notFound } from "next/navigation"
 import ReactMarkdown from "react-markdown"
 import { Pencil2Icon } from '@radix-ui/react-icons';
@@ -15,6 +15,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
         {
             where: { id: parseInt(params.id) }
         })
+        
     if (!issue) notFound();
 
     return (
@@ -32,7 +33,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
             <Box>
                 <Button>
                     <Pencil2Icon />
-                    <Link href={`/issues/form/${issue.id}`}>Edit Issue</Link>
+                    <Link href={`/issues/edit/${issue.id}`}>Edit Issue</Link>
                 </Button>
             </Box>
         </Grid>

@@ -10,7 +10,7 @@ const IssuesPage = async () => {
     <>
       <div className="mb-5">
         <Button>
-          <Link href="/issues/form">New issue</Link>
+          <Link href="/issues/new">New issue</Link>
         </Button>
       </div>
       <Table.Root variant="surface">
