@@ -3,9 +3,24 @@ import { Button, Flex, Table } from "@radix-ui/themes"
 import Link from "next/link"
 import IssueStatusBadge from "../../components/IssueStatusBadge"
 import IssueStatusFilter from "./IssueStatusFilter"
+import { Status } from "@prisma/client"
 
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany()
+interface Props{
+  searchParams : { status :Status}
+}
+
+
+
+const IssuesPage = async ({ searchParams} :Props) => {
+
+  const statuses = Object.values(Status);
+
+  const status = statuses.includes(searchParams.status) ? searchParams.status : undefined
+
+  const issues = await prisma.issue.findMany({
+    where :{ status }
+  })
+
 
   return (
     <>
@@ -40,7 +55,16 @@ const IssuesPage = async () => {
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">{issue.createdAt.toDateString()}</Table.Cell>
             </Table.Row>
+
           ))}
+          {
+            !issues.length && (
+              <Table.Row>
+                <Table.Cell justify={"center"} colSpan={5}> There is no issues !</Table.Cell>
+              </Table.Row>
+            )
+          }
+
         </Table.Body>
 
       </Table.Root>
