@@ -5,6 +5,7 @@ import { User , Issue } from '@prisma/client';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Skeleton from 'react-loading-skeleton';
+import toast, { Toaster} from "react-hot-toast"
 
 const AssigneeSelect = ({issue} : {issue : Issue}) => {
 
@@ -24,7 +25,11 @@ const AssigneeSelect = ({issue} : {issue : Issue}) => {
       <Select.Root
       defaultValue={ issue.assignedToUserId || ""}
       onValueChange={(userId)=>{
-          axios.patch(`/api/issues/${issue.id}` , { assignedToUserId : userId || null } )
+          axios.patch(`/api/issues/${issue.id}` , { assignedToUserId : userId || null } ).then(()=>{
+            toast.success('Issue assigned successfully ')
+          }).catch(err=>{
+            toast.error('Changes could not be saved')
+          })
       }}>
         <Select.Trigger placeholder='Assign..' />
         <Select.Content position="popper">
@@ -36,6 +41,7 @@ const AssigneeSelect = ({issue} : {issue : Issue}) => {
             </Select.Group>
         </Select.Content>
       </Select.Root>
+      <Toaster/>
     </div>
   )
 }
