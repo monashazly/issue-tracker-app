@@ -12,7 +12,7 @@ const LatestIssues = async () => {
             assignedToUser: true,
         },
     })
-    console.log(issues)
+    
     return (
         <Card>
             <Heading size="4" mb="5">Latest Issues</Heading>
