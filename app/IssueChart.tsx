@@ -18,7 +18,6 @@ const IssueChart = ({ open, closed, inProgress }: Props) => {
         { label: 'Closed', value: closed },
     ];
     
-
     return (
         <Card>
             <ResponsiveContainer width="100%" height={300}>
