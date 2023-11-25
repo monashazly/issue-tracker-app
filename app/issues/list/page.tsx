@@ -13,7 +13,7 @@ import { Metadata } from "next"
 
 
 interface Props {
-  searchParams: { status: Status, orderBy: keyof Issue , page : string }
+  searchParams: { status: Status, orderBy: keyof Issue, page: string }
 }
 
 
@@ -22,23 +22,23 @@ interface Props {
 const IssuesPage = async ({ searchParams }: Props) => {
 
   const statuses = Object.values(Status);
+
   const columns: {
     label: string;
     value: keyof Issue;
     className?: string;
-  }[] = [{ label: "ID", value: "id" },
-  { label: "Description", value: "description" },
-  { label: "Issue", value: "title" },
-  {
-    label: "Status",
-    value: "status",
-    className: "hidden md:table-cell",
-  },
-  {
-    label: "Created",
-    value: "createdAt",
-    className: "hidden md:table-cell",
-  },
+  }[] = [
+      { label: 'Issue', value: 'title' },
+      {
+        label: 'Status',
+        value: 'status',
+        className: 'hidden md:table-cell',
+      },
+      {
+        label: 'Created',
+        value: 'createdAt',
+        className: 'hidden md:table-cell',
+      },
     ];
 
   const status = statuses.includes(searchParams.status) ? searchParams.status : undefined
@@ -53,7 +53,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
     take: pageSize
   })
 
-  const issueCount = await prisma.issue.count({ where : {status} })
+  const issueCount = await prisma.issue.count({ where: { status } })
 
 
   return (
@@ -80,13 +80,12 @@ const IssuesPage = async ({ searchParams }: Props) => {
         <Table.Body>
           {issues.map(issue => (
             <Table.Row key={issue.id}>
-              <Table.Cell>{issue.id}</Table.Cell>
               <Table.Cell>
                 <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
-                <div className='block md:hidden'>{issue.description}</div>
-                <div className='block md:hidden'>{issue.status}</div>
+                <div className='block md:hidden'>
+                  <IssueStatusBadge status={issue.status}></IssueStatusBadge>
+                </div>
               </Table.Cell>
-              <Table.Cell className="hidden md:table-cell">{issue.description}</Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 <IssueStatusBadge status={issue.status}></IssueStatusBadge>
               </Table.Cell>
@@ -106,15 +105,15 @@ const IssuesPage = async ({ searchParams }: Props) => {
 
       </Table.Root>
       <div className="py-2">
-      <Pagination  itemCount={issueCount} currentPage={page} pageSize={pageSize}/>
+        <Pagination itemCount={issueCount} currentPage={page} pageSize={pageSize} />
       </div>
     </>
   )
 }
 
-export const metadata:Metadata ={
-  title : 'Issue Tracker - Issue list',
-  description : 'View all project issues'
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Issue list',
+  description: 'View all project issues'
 }
 
 export default IssuesPage
