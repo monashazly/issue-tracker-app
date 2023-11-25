@@ -19,6 +19,7 @@ const IssueChart = ({ open, closed, inProgress }: Props) => {
     ];
 
     return (
+        // fill={(barData :string) => barData.fill}
         <Card>
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>
@@ -26,7 +27,7 @@ const IssueChart = ({ open, closed, inProgress }: Props) => {
                     <YAxis />
                     <Bar dataKey="value" barSize={60}
                         strokeWidth={1}
-                        fill={(barData :any) => barData.fill}/>
+                        style={{ fill: 'var(--accent-9)' }}/>
                 </BarChart>
             </ResponsiveContainer>
         </Card>
